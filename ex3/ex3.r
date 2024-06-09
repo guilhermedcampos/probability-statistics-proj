@@ -1,8 +1,8 @@
-library(openxlsx)
+library(readxl)
 library(ggplot2)
 
 # Reads the data, then filters it and creates an additional column for date.
-renewables_data <- read.xlsx("electricity.xlsx") |>
+renewables_data <- read_excel("electricity.xlsx") |>
   subset(select = c("COUNTRY", "YEAR", "MONTH", "PRODUCT", "share")) |>
   transform(
     share = as.numeric(share),
