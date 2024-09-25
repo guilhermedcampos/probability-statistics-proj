@@ -1,31 +1,89 @@
-set.seed(2255)
+"""
+A system consists of 9 electrical circuits, where each circuit emits signals coded from the set {1,2,…,10}. 
+Each circuit emits a signal i with probability i/55, for i∈{1,2,…,10}, independently of the other circuits.
+If at least one of the circuits emits signal 2, a sound warning is produced. 
+If at least one of the circuits emits signal 1, the system shuts down.
 
-# Probabilities vector
+Fixing the seed at 2255, simulate 150 realizations of the state of a system with the characteristics described above,
+and calculate the proportion of times a sound warning is produced in a system that is not shut down. 
+This proportion, rounded to 2 decimal places, is:
+"""
+set.seed(2255)  # Set random seed for reproducibility
+
+# Probabilities vector for emitting signals 1 to 10
 probs <- c(1/55, 2/55, 3/55, 4/55, 5/55, 6/55, 7/55, 8/55, 9/55, 10/55)
-valores <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-num_simulacoes <- 150
 
-avisos_sem_desligamento <- 0 
-sistemas_nao_desligados <- 0
+# Possible signal values that each circuit can emit
+values <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 
-for (i in 1:num_simulacoes) {
-  sinais <- sample(valores, size = 9, replace = TRUE, prob = probabilidades)
+# Number of simulations (i.e., realizations of the system)
+num_simulations <- 150
+
+# Initialize counters for the number of warnings without shutdown and the number of systems not shut down
+warnings_without_shutdown <- 0 
+systems_not_shutdown <- 0
+
+# Loop through the 150 simulations
+for (i in 1:num_simulations) {
   
-  aviso_sonoro <- any(sinais == 2)
+  # Simulate the signals emitted by the 9 circuits, each emitting a signal with probability defined by 'probs'
+  signals <- sample(values, size = 9, replace = TRUE, prob = probs)
   
-  sistema_desligado <- any(sinais == 1)
+  # Check if at least one circuit emitted signal 2 (sound warning is triggered)
+  sound_warning <- any(signals == 2)
   
-  if (!sistema_desligado) {
-    sistemas_nao_desligados <- sistemas_nao_desligados + 1
+  # Check if at least one circuit emitted signal 1 (system shutdown is triggered)
+  system_shutdown <- any(signals == 1)
+  
+  # If the system is not shut down, increment the 'systems_not_shutdown' counter
+  if (!system_shutdown) {
+    systems_not_shutdown <- systems_not_shutdown + 1
   }
   
-  if (aviso_sonoro & !sistema_desligado) {
-    avisos_sem_desligamento <- avisos_sem_desligamento + 1
+  # If a sound warning was triggered and the system is not shut down, increment the 'warnings_without_shutdown' counter
+  if (sound_warning & !system_shutdown) {
+    warnings_without_shutdown <- warnings_without_shutdown + 1
   }
 }
 
-proporcao <- avisos_sem_desligamento / sistemas_nao_desligados
+# Calculate the proportion of warnings without shutdowns
+proportion <- warnings_without_shutdown / systems_not_shutdown
 
-proporcao_arredondada <- round(proporcao, 2)
+# Round the proportion to 2 decimal places
+rounded_proportion <- round(proportion, 2)
 
-proporcao_arredondada
+# Output the final rounded proportion
+rounded_proportion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
